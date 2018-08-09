@@ -1,10 +1,10 @@
 const net = require('net');
 const readline = require('readline');
 const crypto = require('crypto');
-var serverSecret;
-var decrypted_msg;
-var encrypted_msg;
-var count = 0 ;
+let serverSecret;
+let decrypted_msg;
+let encrypted_msg;
+let count = 0 ;
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -14,8 +14,7 @@ const rl = readline.createInterface({
 const server1 = crypto.createECDH('secp521r1');
 const serverKey = server1.generateKeys();
 
-
-var server = net.createServer((l)=>{
+const server = net.createServer((l)=>{
     console.log('Connection Established');
 	l.write(serverKey);
 	    
@@ -23,8 +22,8 @@ var server = net.createServer((l)=>{
 		console.log('Connection Ended');
     });   
 
-var recursiveAsyncReadLine = function () {
-  rl.question('', function (answer) {
+const recursiveAsyncReadLine = function () {
+  rl.question('server: ', function (answer) {
 	  
     if (answer == 'exit')
 	{ 
@@ -57,17 +56,16 @@ recursiveAsyncReadLine();
     });
 });
 
-function cipher(data){
-    var cipher = crypto.createCipher('aes192',serverSecret);
-    var mystr = cipher.update(data, 'utf8', 'hex');
+const cipher = (data) =>{
+    let cipher = crypto.createCipher('aes192',serverSecret);
+    let mystr = cipher.update(data, 'utf8', 'hex');
     mystr += cipher.final('hex');
     return mystr;
 }
 
-function decipher(data)
-{
-    var decipher = crypto.createDecipher('aes192',serverSecret);
-    var mystr = decipher.update(data, 'hex', 'utf8');
+const decipher = (data) => {
+    let decipher = crypto.createDecipher('aes192',serverSecret);
+    let mystr = decipher.update(data, 'hex', 'utf8');
     mystr += decipher.final('utf8');
      return mystr;
 }

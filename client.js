@@ -15,7 +15,7 @@ const client1 = crypto.createECDH('secp521r1');
 const clientKey = client1.generateKeys();
 
 
-var client = net.createConnection({port:8000},()=>{
+const client = net.createConnection({port:8000},()=>{
   console.log('Connection made with server');
   client.write(clientKey);
 
@@ -23,8 +23,8 @@ var client = net.createConnection({port:8000},()=>{
 		console.log('Connection Ended');
 	});
  
-  var recursiveAsyncReadLine = function () {
-  rl.question('', function (answer) {
+  const recursiveAsyncReadLine = function () {
+  rl.question('client: ', function (answer) {
 
   if (answer == 'exit') 
    {
@@ -55,17 +55,16 @@ recursiveAsyncReadLine();
     });   
 });
 
-function cipher(data){
-    var cipher = crypto.createCipher('aes192',clientSecret);
-    var mystr = cipher.update(data, 'utf8', 'hex');
+const cipher = (data) => {
+    let cipher = crypto.createCipher('aes192',clientSecret);
+    let mystr = cipher.update(data, 'utf8', 'hex');
     mystr += cipher.final('hex');
     return mystr;
 }
 
-function decipher(data)
-{
-    var decipher = crypto.createDecipher('aes192',clientSecret);
-    var mystr = decipher.update(data, 'hex', 'utf8');
+const decipher = (data) => {
+    let decipher = crypto.createDecipher('aes192',clientSecret);
+    let mystr = decipher.update(data, 'hex', 'utf8');
     mystr += decipher.final('utf8');
      return mystr;
 }
